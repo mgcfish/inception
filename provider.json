@@ -2,17 +2,41 @@
   {
   "vulnerability":"PHP info is publicly viewable",
     "sendIn":"url",
-    "payload":["/php.php","/phpinfo.php","/info.php"],
+    "payload":["/php.php","/phpinfo.php","/info.php","/_profiler/phpinfo"],
     "checkIn":"responseBody",
     "checkFor":"PHP Extension&&&&PHP API&&&&PHP Version",
     "color":"red"
   },
+   {
+        "vulnerability": "WP-Config Exposed",
+        "sendIn": "url",
+        "color": "red",
+        "payload": [
+            "/wp-config.php~",
+            "/wp-config.php.save",
+            "/wp-config.php_bak",
+            "/wp-config.php.bak",
+            "/wp-config.php.old",
+            "/wp-config.php.orig",
+            "/wp-config.php.original"
+        ],
+        "checkIn": "responseBody",
+        "checkFor": "DB_USER"
+    },
   {
   "vulnerability":"Server status is publicly viewable",
   "sendIn":"url",
   "payload":["/server-status"],
   "checkIn":"responseBody",
   "checkFor":"Apache Server Status&&&&Server Version&&&&CPU Usage:",
+  "color":"yellow"
+  },
+  {
+  "vulnerability":"Tomcat Server status is publicly viewable",
+  "sendIn":"url",
+  "payload":["/status?full=true"],
+  "checkIn":"responseBody",
+  "checkFor":"Current thread count",
   "color":"yellow"
   },
   {
@@ -102,7 +126,8 @@
       "vulnerability": "Magento Config",
       "sendIn": "url",
       "payload": [
-        "/app/etc/local.xml"
+        "/app/etc/local.xml",
+        "/store/app/etc/local.xml"
       ],
       "checkIn": "responseBody",
       "checkFor": "Mage&&&&<config",
@@ -156,6 +181,16 @@
         ],
         "checkIn": "responseHeader",
         "checkFor": "Access-Control-Allow-Origin: https://doesnot.exists||||Access-Control-Allow-Origin: null"
+    },
+    {
+      "vulnerability": "Apple App-Site Association file detected",
+      "sendIn": "url",
+      "payload": [
+        "/.well-known/apple-app-site-association"
+      ],
+      "checkIn": "responseBody",
+      "checkFor": "applinks",
+      "color": "red"
     }
   ]
 
